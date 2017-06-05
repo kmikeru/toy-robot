@@ -1,4 +1,6 @@
 require_relative('table.rb')
+require_relative('command.rb')
+
 class Robot
   attr_accessor :x,:y,:direction,:table
   DIRECTIONS=[:NORTH,:EAST,:SOUTH,:WEST]
@@ -65,27 +67,18 @@ class Robot
     end
 
     def execute(command)
+      return unless command.kind_of?Command
       case command
-      when /^PLACE\s.*/
-        execute_place_cmd(command)
-      when 'MOVE'
+      when CommandPlace        
+        place(command.x,command.y,command.direction)
+      when CommandMove
         move
-      when 'LEFT'
+      when CommandLeft
         rotate_left
-      when 'RIGHT'
+      when CommandRight
         rotate_right
-      when 'REPORT'
+      when CommandReport
         report
-      end
-    end
-
-    def execute_place_cmd(command)
-      place=command.scan(/PLACE\s(\d+),(\d+),(NORTH|SOUTH|EAST|WEST)/)
-      if place!=[] && place[0].size==3 then
-        x=place[0][0].to_i
-        y=place[0][1].to_i
-        direction=place[0][2].to_sym
-        place(x,y,direction)
       end
     end
 
