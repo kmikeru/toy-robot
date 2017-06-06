@@ -6,11 +6,13 @@ class Robot
   DIRECTIONS=[:NORTH,:EAST,:SOUTH,:WEST]
 
   def place(x,y,direction)
+    return unless DIRECTIONS.include?(direction)
+    table=Table.new
+    return unless x.between?(0,table.X-1) && y.between?(0,table.Y-1)
     @x=x
     @y=y
-    return unless DIRECTIONS.include?(direction)
     @direction=direction
-    @table=Table.new
+    @table=table
   end
 
   def move()
@@ -63,13 +65,15 @@ class Robot
 
     def report()
       return unless is_placed
-      puts @x.to_s+','+@y.to_s+','+@direction.to_s
+      str=@x.to_s+','+@y.to_s+','+@direction.to_s
+      puts str
+      return str
     end
 
     def execute(command)
       return unless command.kind_of?Command
       case command
-      when CommandPlace        
+      when CommandPlace
         place(command.x,command.y,command.direction)
       when CommandMove
         move

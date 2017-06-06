@@ -7,7 +7,7 @@ units x 5 units. There are no other obstructions on the table surface. The robot
 ### Running:
 *Unit tests:*
 
-ruby test/test_robot.rb
+bundle exec rspec
 
 *With test data:*
 
